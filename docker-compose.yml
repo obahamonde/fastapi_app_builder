@@ -1,0 +1,17 @@
+version: "2"
+services:
+  db:
+    image: postgres:latest
+    restart: on-failure
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: db
+      POSTGRES_HOST: 0.0.0.0
+      POSTGRES_PORT: 5432
+      DATABASE_URL: postgresql://user:password@localhost:5432/db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ~/.docker/db_data:/var/lib/postgresql/dataversion
+      
