@@ -1,5 +1,5 @@
 from api.resources import *
-from orjson import loads
+from json import loads
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from prisma import Prisma
@@ -23,11 +23,11 @@ class FatApi(FastAPI):
         @self.get('/api', tags=['schema'])
         def docs():
             responses = []
-            schemas_ = [loads(model.schema_json())
+            schemas_ = [loads(model.schema())
                         for name, model in prisma_models]
             for schema in schemas_:
                 schema_name = schema['$ref'].replace('#/definitions/', '')
-                schema_content = schema['definitions'][schema_name]
+                schema_content = schema
 
                 responses.append({
                     'name': schema_name,
@@ -47,14 +47,13 @@ class FatApi(FastAPI):
             await db.disconnect()
             
         for name, model in prisma_models:
-            data = loads(model.schema_json())["definitions"][name]["properties"]
-            for key, value in data.items():
-                if '$ref' in value:
-                    data[key] = None
-            required = loads(model.schema_json())["definitions"][name]["required"]
-            for item in required:
-                if item in ['id', 'createdAt', 'updatedAt']:
-                    required.remove(item)
-            data['required'] = required
-            self.include_router(Resource(schema=create_model(name, __base__ = BaseSchema, field_definitions =data), model=model), prefix='/api', tags=[name], default_response_class=JSONResponse)
+            self.include_router(
+                Resource(
+                    schema=create_model(
+                        name, __base__ = BaseSchema, 
+                        field_definitions ={field.name: field.type_.__name__ for field in model.__fields__.values()}),
+                    model=model), 
+                prefix='/api', 
+                tags=[name], 
+                default_response_class=JSONResponse)
             
