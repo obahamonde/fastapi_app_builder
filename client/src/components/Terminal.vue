@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const { status, data, send, open, close } = useWebSocket("ws://localhost:9000/ws");
+const { status, data, send, open, close } = useWebSocket("ws://localhost:3000/ws");
 
 
 const message = ref("");
@@ -37,7 +37,7 @@ const handle = (msg:string) => {
 
 </script>
 <template>
-  <label text-light font-mono for="term" h-full w-full cursor-text min-h-32 max-h-64>
+  <label text-light font-mono for="term" h-full w-full cursor-text min-h-32 max-h-64 bg-black>
     <p v-for="msg in responses" :key="msg" font-mono text-light >{{ msg }}</p>
  <p row w-full> <strong text-success>$root: </strong><input type="text" id="term" name="term" no-outline text-secondary  v-model="message"
     @keyup.enter="handle(message)"

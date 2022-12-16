@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     Chart: typeof import('./components/Chart.vue')['default']
     Editor: typeof import('./components/Editor.vue')['default']
     FormModal: typeof import('./components/FormModal.vue')['default']
+    Menu: typeof import('./components/Menu.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Spinner: typeof import('./components/Spinner.vue')['default']
