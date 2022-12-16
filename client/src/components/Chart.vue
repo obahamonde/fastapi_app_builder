@@ -1,5 +1,5 @@
 <template>
- <select v-model="chartType">
+ <select v-model="chartType" btn-get text-center>
       <option value="bar">Bar</option>
       <option value="line">Line</option>
       <option value="radar">Radar</option>

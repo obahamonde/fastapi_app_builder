@@ -55,13 +55,15 @@
         <v-list
             dense
             nav
+            col center
         >
-            <v-list-item>
-                <v-list-item-title text-light text-caption row>Terminal</v-list-item-title>
+            <p my-4 row center>
                 <Icon icon="oi:terminal" color="accent" x2 mx-2 cp scale sh rf p-1 text-center
                     @click="footer = !footer"
-                />
-            </v-list-item>
+                /><span text-lg text-center>Terminal</span>
+            </p>
+                <AuthModal  />
+           
     </v-list>
         </v-navigation-drawer>
         <v-footer v-if="footer" bg-black app>

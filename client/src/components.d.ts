@@ -7,6 +7,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Auth: typeof import('./components/Auth.vue')['default']
+    AuthModal: typeof import('./components/AuthModal.vue')['default']
     Chart: typeof import('./components/Chart.vue')['default']
     Editor: typeof import('./components/Editor.vue')['default']
     FormModal: typeof import('./components/FormModal.vue')['default']
