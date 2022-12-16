@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-py"
+  provider  = "prisma-client-py"
   interface = "asyncio"
 }
 
@@ -12,86 +9,25 @@ datasource db {
 }
 
 model User {
-  id  String  @id @default(uuid())
-  sub String  @unique
-  name String
-  email String? @unique
-  picture String?
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  locale String?
-  emailVerified Boolean? @default(false)
-  givenName String?
-  familyName String?
-  nickname String?
-  ownIpAddresses IPAddress[] @relation("user_ips")
-  ips IPAddress[] @relation("collected_ips")
+  username  String
+  email     String   @unique
+  password  String
+  apiReqs   ApiReq[]
 }
 
-model IPAddress {
-  user User? @relation("user_ips",fields: [userId], references: [id]) 
-  userId String? @unique
-  collectedBy User[] @relation("collected_ips")
-  host String
-  domain String?
-  ip String  @unique @id
+model ApiReq {
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  geoIP GeoIP?
-  network Network?
-  scan Scan?
-  app App?
-} 
-  // GeoIP
-
-model GeoIP {
-  id String @unique @id @default(uuid())
-  ip String @unique
-  ipAddr IPAddress @relation(fields: [ip], references: [ip])
-  city String?
-  region String?
-  country String?
-  postal String?
-  latitude Float?
-  longitude Float?
-  timezone String?
-  asn String?
-  org String?
-  isp String?
-  mobile Boolean?
-  proxy Boolean?
+  method    String
+  path      String
+  headers   String
+  body      String
+  status    Int
+  ip        String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
 }
-  // Network
-model Network {
-  id String @unique @id @default(uuid())
-  ip String @unique
-  ipAddr IPAddress @relation(fields: [ip], references: [ip])
-  cidr String?
-  network String?
-  mask String?
-  type String?
-}
-  // Scanner
-model Scan {
-  id String @unique @id @default(uuid())
-  ip String @unique
-  ipAddr IPAddress @relation(fields: [ip], references: [ip])  
-  openPorts String?
-  openServices String?
-  openProtocols String?
-  os String?
-  osVersion String?
-  osCpe String?
-}
-  // Application
-model App {
-  id String @unique @id @default(uuid())
-  ip String @unique
-  ipAddr IPAddress @relation(fields: [ip], references: [ip])
-  links String[]
-  headers String[]
-  html String?
-  scripts String[]
-  images String[]
-  styles String[]
-} 

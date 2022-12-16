@@ -1,17 +1,17 @@
 [tool.poetry]
-name = "app"
+name = "fastapi_appbuilder"
 version = "0.0.1"
 description = ""
-authors = ["Oscar Bahamonde <107950590+obahamonde@users.noreply.github.com>"]
+authors = ["Oscar Bahamonde <oscar.bahamonde@hatarini.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 fastapi = "^0.88.0"
 boto3 = "^1.26.28"
 python-multipart = "^0.0.5"
 prisma = "^0.7.1"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
-orjson = "^3.8.3"
+orjson = "^3.6"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

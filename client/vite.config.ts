@@ -13,31 +13,6 @@ export default defineConfig({
       "~/": "./src",
     },
   },
-  server:{
-  proxy: {
-    "/api": {
-      target: "http://localhost:8000",
-      changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/api/, ""),
-    },
-  "/ws": {
-      target: "http://localhost:8000/ws",
-      changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/ws/, ""),
-      ws: true,
-    },
-    "/docs": {
-      target: "http://localhost:8000/docs",
-      changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/docs/, ""),
-    },
-    "/openapi.json": {
-      target: "http://localhost:8000/openapi.json",
-      changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/openapi.json/, ""),
-    },
-  },
-},
 
   plugins: [
     Vue({

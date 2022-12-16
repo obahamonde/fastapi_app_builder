@@ -20,9 +20,4 @@ from os import getenv
 load_dotenv()
 
 class env:
-    AWS_ACCESS_KEY_ID = getenv('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = getenv('AWS_SECRET_ACCESS_KEY')
-    AWS_REGION = getenv('AWS_REGION')
-    AWS_S3_BUCKET = getenv('AWS_S3_BUCKET')
-    AWS_SES_EMAIL = getenv('AWS_SES_EMAIL')
     DATABASE_URL = getenv('DATABASE_URL')

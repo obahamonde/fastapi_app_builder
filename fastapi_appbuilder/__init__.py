@@ -1,0 +1,1 @@
+from fastapi_appbuilder.main import AppBuilder
