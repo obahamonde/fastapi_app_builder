@@ -11,14 +11,14 @@
         
         <v-btn icon
                 mx-2
-            >     <v-icon>mdi-magnify</v-icon>
+            >     <Icon icon="mdi-magnify" color="accent" x2 mx-2 cp scale sh rf p-1 text-center />
             </v-btn>
             <v-btn icon
                 mx-2
                 @click="drawerRight = !drawerRight"
             >
-                <v-icon>mdi-apps</v-icon>
-            </v-btn>
+                <Icon icon="mdi-apps" color="accent" x2 mx-2 cp scale sh rf p-1 text-center />
+                        </v-btn>
         </v-app-bar>
         <v-navigation-drawer
             v-model="drawer"
@@ -36,7 +36,7 @@
                 link
             >
             <RouterLink :to="item.title.toLowerCase()" row start align-middle gap-2 text-caption text-light >
-                <v-icon text-center >{{ item.icon }}</v-icon>
+                <Icon :icon="item.icon" color="accent" x2 mx-2 cp scale sh rf p-1 text-center />
                 <span text-lg text-center>{{ item.title }}</span>
             </RouterLink>
             </v-list-item>

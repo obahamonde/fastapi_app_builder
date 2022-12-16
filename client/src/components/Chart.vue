@@ -1,32 +1,40 @@
 <template>
-    <div>
+ <select v-model="chartType">
+      <option value="bar">Bar</option>
+      <option value="line">Line</option>
+      <option value="radar">Radar</option>
+      <option value="doughnut">Doughnut</option>
+      <option value="polarArea">Polar Area</option>
+      <option value="bubble">Bubble</option>
+      <option value="scatter">Scatter</option>
+    </select> 
+ <div id="canvasContainer">
       <canvas id="planet-chart"></canvas>
     </div>
 <div>{{foo}}</div>
 </template>  
   <script setup lang="ts">
+import { Ref } from 'vue';
 import Chart from "chart.js";
-const props = defineProps({
-  chartType: {
-    type: String,
-    default: "line"
-  }
-});
+const chartType = ref("bar");
+const foo = ref() as Ref<object>;
 const dataSet = ref({
-  type: props.chartType,
+  type: computed(() => chartType.value),
   data: {
-    labels: ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
+    labels: ["2XX", "3XX", "4XX", "5XX"],
     datasets: [
       {
-        label: "Number of Moons",
-        data: [0, 0, 1, 2, 79, 82, 27, 14],
+        label: "Requests by Status Code",
+        data: [12, 19, 3, 5],
         backgroundColor: "#ff0000",
         borderColor: "#0000ff",
         borderWidth: 3
       },
       {
-        label: "Planetary Mass (relative to the Sun x 10^-6)",
-        data: [0.166, 2.081, 3.003, 0.323, 954.792, 285.886, 43.662, 51.514],
+        label: "Requests over Time",
+        data: [2, 29, 5, 5],
+          
+        
         backgroundColor: "rgba(71, 183,132,.5)",
         borderColor: "#47b784",
         borderWidth: 3
@@ -48,11 +56,23 @@ const dataSet = ref({
     }
   }
 });
-const foo = ref("")
-onMounted(async()=>{
-    const ctx = document.getElementById('planet-chart');
-    new Chart(ctx, dataSet.value);
-    const { data } = await useFetch("/api/ApiReq/")
-    foo.value = JSON.stringify(unref(data))
-})
-</script>
+const chart = ref(null) as Ref<Chart | null>;
+const fetchChartData = async()=>{
+  const { data } = await useFetch("/api/chart/");
+  const dataSet = unref(data) as object;
+  foo.value = dataSet["ok"]
+}
+  onMounted(async() => {
+  chart.value = new Chart("planet-chart", unref(dataSet))
+  await fetchChartData();
+});
+watch(chartType, () => {
+  const el = document.getElementById("planet-chart") as HTMLCanvasElement;
+  el.parentNode?.removeChild(el);
+  const canvas = document.createElement("canvas");
+  canvas.id = "planet-chart";
+  document.getElementById("canvasContainer")?.appendChild(canvas);
+  chart.value = new Chart("planet-chart", unref(dataSet));
+});
+  </script>
+  
