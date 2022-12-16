@@ -6,14 +6,23 @@ import Layouts from "vite-plugin-vue-layouts";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import Unocss from "unocss/vite";
+import path from "path";
 
 export default defineConfig({
   resolve: {
     alias: {
-      "~/": "./src",
+      "~/": path.resolve(__dirname, "src") + "/",
     },
   },
-
+  server:{
+    proxy:{
+      "/api": {
+        target: "http://localhost:9000/api",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      }
+    }
+  },
   plugins: [
     Vue({
       include: [/\.vue$/],

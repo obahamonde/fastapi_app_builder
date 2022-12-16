@@ -1,18 +1,22 @@
 <template>
     <v-app app>
         <v-app-bar app color="primary" dark row center px-4>
-            <Icon icon="simple-icons:fastapi" @click="drawer = !drawer" color="accent" x2 mx-2 cp scale sh rf/>
-            <v-toolbar-title>FastAPI GUI <FormModal/></v-toolbar-title>
+                <Icon icon="simple-icons:fastapi" @click="drawer = !drawer" color="accent" x2 mx-2 cp scale sh rf/>
+            <v-toolbar-title>FastAPI GUI </v-toolbar-title> 
             <v-spacer></v-spacer>
-            <v-btn icon
+           
+            <strong text-light text-caption mx-2>
+            {{ now.toLocaleTimeString() }}
+        </strong>
+        
+        <v-btn icon
                 mx-2
-            >
-                <v-icon>mdi-magnify</v-icon>
+            >     <v-icon>mdi-magnify</v-icon>
             </v-btn>
             <v-btn icon
                 mx-2
             >
-                <v-icon>mdi-apps</v-icon>
+                <Menu @switch-app="handleSwitch" />
             </v-btn>
         </v-app-bar>
         <v-navigation-drawer
@@ -33,7 +37,6 @@
             >
             <RouterLink :to="item.title.toLowerCase()" row start align-middle gap-2 text-caption text-light >
                 <v-icon text-center >{{ item.icon }}</v-icon>
-  
                 <span text-lg text-center>{{ item.title }}</span>
             </RouterLink>
             </v-list-item>
@@ -42,13 +45,6 @@
             <v-main pt-16>
                 <RouterView />
             </v-main>
-            <v-footer
-                app
-                bg-accent
-                no-outline
-                >
-            <Terminal />
-        </v-footer>
     </v-app>
 </template>
 <style global>
@@ -67,4 +63,11 @@ const items = [
     { title: 'Settings', icon: 'mdi-cog' },
 ]
 const drawer = ref(false)
+const now = useNow()
+const router = useRouter()
+const handleSwitch = (app: string) => {
+    drawer.value = false
+    router.push(`/app/${app.toLowerCase()}`)
+}
+
 </script>

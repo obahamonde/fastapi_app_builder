@@ -6,28 +6,8 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 from prisma import Prisma
-from subprocess import check_output
-
 
 web = StaticFiles(directory="www", html=True)
-
-
-commands_available = {
-    "install": check_output(["sudo", "pip", "install", "prisma"]).decode("utf-8"),
-    "fetch": check_output(["sudo", "prisma","py","fetch"]).decode("utf-8"),
-    "generate": check_output(["sudo","prisma","generate"]).decode("utf-8"),
-    "push": check_output(["sudo", "prisma","db","push"]).decode("utf-8"),
-    "pull": check_output(["sudo","prisma","db","pull"]).decode("utf-8"),   
-    }
-
-
-
-def ws_process(data):
-    if data in commands_available:
-        return commands_available[data]
-    else:
-        return "Unknown command"
-
 
 class AppBuilder(FastAPI):
     def __init__(self, *args, **kwargs):
@@ -50,8 +30,7 @@ class AppBuilder(FastAPI):
                     'schema': schema_content
                 })
             return responses
-        
-        
+                
         @self.on_event('startup')
         async def startup():
             global db
@@ -79,7 +58,7 @@ class AppBuilder(FastAPI):
             try:
                 while True:
                     data = await websocket.receive_text()
-                    await websocket.send_text(ws_process(data))
+                    await websocket.send_text(f"Message text was: {data}")
             except WebSocketDisconnect:
                 print("Client disconnected")
 
@@ -94,8 +73,9 @@ class AppBuilder(FastAPI):
             prisma_schema = text.decode("utf-8")
             with open("prisma/schema.prisma", "w") as f:
                 f.write(prisma_schema)
-            return {"message": "Prisma schema updated", "type": "success"}
+            return "Prisma schema updated"
 
         self.include_router(Auth(), prefix='/api', tags=['auth'])
+        
         self.mount("/", web)
                     
