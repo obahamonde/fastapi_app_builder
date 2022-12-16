@@ -14,7 +14,7 @@ const login = async()=>{
         method: "POST",
         body: formdata
     }).json();
-    const token = unref(data).token
+    const token = unref(data).access_token
     alert(token)    
 }
 </script>

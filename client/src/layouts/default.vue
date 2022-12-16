@@ -11,7 +11,7 @@
         
         <v-btn icon
                 mx-2
-            >     <Icon icon="mdi-magnify" color="accent" x2 mx-2 cp scale sh rf p-1 text-center />
+            >     <FormModal />
             </v-btn>
             <v-btn icon
                 mx-2
@@ -56,20 +56,22 @@
             dense
             nav
             col center
+            
         >
             <p my-4 row center>
-                <Icon icon="oi:terminal" color="accent" x2 mx-2 cp scale sh rf p-1 text-center
+                <Icon icon="oi:terminal" color="accent" x2 mx-2 p-1 cp scale text-center
                     @click="footer = !footer"
                 /><span text-lg text-center>Terminal</span>
             </p>
-                <AuthModal  />
-           
+            <p my-4 row center>
+            <AuthModal  />
+        </p>
     </v-list>
         </v-navigation-drawer>
         <v-footer v-if="footer" bg-black app>
             <Terminal />
         </v-footer>
-    </v-app>
+</v-app>    
 </template>
 <style global>
 .router-link-active {
@@ -80,6 +82,7 @@
 <script setup lang="ts">
 const items = [
     { title: 'Home', icon: 'mdi-home'},
+    { title: 'Swagger' , icon: 'logos:swagger'},
     { title: 'Dashboard', icon: 'mdi-view-dashboard' },
     { title: 'Schema', icon: 'mdi-database' },
     ]

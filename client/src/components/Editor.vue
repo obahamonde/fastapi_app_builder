@@ -26,6 +26,6 @@ onMounted(async() => {
     color="primary"
     @click="() => useFetch('/api/prisma', { method: 'POST', body: schema })"
   >
-    <v-icon>mdi-floppy</v-icon>
+<Icon icon="mdi-floppy" x2 />
   </v-btn>
 </template>

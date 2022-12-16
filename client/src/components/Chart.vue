@@ -60,7 +60,7 @@ const chart = ref(null) as Ref<Chart | null>;
 const fetchChartData = async()=>{
   const { data } = await useFetch("/api/chart/");
   const dataSet = unref(data) as object;
-  foo.value = dataSet["ok"]
+  foo.value = dataSet;
 }
   onMounted(async() => {
   chart.value = new Chart("planet-chart", unref(dataSet))
