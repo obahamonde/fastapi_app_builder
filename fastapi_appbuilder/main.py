@@ -1,3 +1,4 @@
+from fastapi_appbuilder.typed import *
 from fastapi_appbuilder.resources import *
 from fastapi_appbuilder.auth import Auth
 from json import loads
@@ -6,6 +7,7 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 from prisma import Prisma
+from prisma.models import ApiReq
 
 web = StaticFiles(directory="www", html=True)
 
@@ -75,7 +77,24 @@ class AppBuilder(FastAPI):
                 f.write(prisma_schema)
             return "Prisma schema updated"
 
-        self.include_router(Auth(), prefix='/api', tags=['auth'])
+        @self.middleware("http")
+        async def save_request(request: Request, call_next:Callable):
+            response = await call_next(request)
+            response_body = b''
+            async for chunk in response.body_iterator:
+                response_body += chunk
+            response_body = response_body.decode("utf-8")
+            await ApiReq.prisma().create(data={
+                'method': request.method,
+                'path': request.url.path,
+                'headers': dumps(dict(request.headers)),
+                'body': (await request.body()).decode("utf-8"),
+                'status': response.status_code,
+                'ip': request.client.host or request.headers.get('X-Forwarded-For') or request.headers.get('CF-Connecting-IP')
+            })
+            return Response(content=response_body, status_code=response.status_code, headers=response.headers, media_type=response.media_type)
+
+        self.include_router(Auth(), prefix='/api', tags=['auth']) 
         
         self.mount("/", web)
                     

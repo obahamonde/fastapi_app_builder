@@ -5,7 +5,6 @@
 <div>{{foo}}</div>
 </template>  
   <script setup lang="ts">
-import { propsToAttrMap } from "@vue/shared";
 import Chart from "chart.js";
 const props = defineProps({
   chartType: {
