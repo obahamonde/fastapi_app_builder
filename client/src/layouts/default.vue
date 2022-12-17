@@ -1,8 +1,8 @@
 <template>
     <v-app app>
         <v-app-bar app color="primary" dark row center px-4>
-                <Icon icon="simple-icons:fastapi" @click="drawer = !drawer" color="accent" x2 mx-2 cp scale sh rf/>
-            <v-toolbar-title>FastAPI GUI </v-toolbar-title> 
+                <Icon icon="simple-icons:fastapi" @click="drawer = !drawer" color="accent" x3 hover:animate-spin mx-2 cp scale sh rf/>
+            <v-toolbar-title text-3xl class="merienda" text-amber>FastAPI App Builder </v-toolbar-title> 
             <v-spacer></v-spacer>
            
             <strong text-light text-caption mx-2>
@@ -17,7 +17,7 @@
                 mx-2
                 @click="drawerRight = !drawerRight"
             >
-                <Icon icon="mdi-apps" color="accent" x2 mx-2 cp scale sh rf p-1 text-center />
+                <Icon icon="mdi-apps" color="accent" x2 mx-2 cp scale  rf p-1 text-center />
                         </v-btn>
         </v-app-bar>
         <v-navigation-drawer
@@ -55,16 +55,16 @@
         <v-list
             dense
             nav
-            col center
-            
+            col
+            start
         >
-            <p my-4 row center>
-                <Icon icon="oi:terminal" color="accent" x2 mx-2 p-1 cp scale text-center
-                    @click="footer = !footer"
+            <p my-4 row center  @click="footer = !footer"  cp scale  >
+                <Icon icon="oi:terminal" color="accent" x2 mx-2 ml-5 p-1 cp scale text-center
+                   
                 /><span text-lg text-center>Terminal</span>
             </p>
             <p my-4 row center>
-            <AuthModal  />
+            <AuthModal mx-2 p-1 cp scale text-center  />
         </p>
     </v-list>
         </v-navigation-drawer>

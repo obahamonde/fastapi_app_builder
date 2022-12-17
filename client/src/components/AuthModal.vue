@@ -3,10 +3,11 @@ const dialog = ref(false);
 </script>
 <template>
     <v-row row center>
-        <v-dialog v-model="dialog" persistent col>
+        <v-dialog v-model="dialog" w-96 rounded-lg sh p-4>
             <template v-slot:activator="{ props }">
-                    <Icon icon="mdi-account" x2 v-bind="props" cp scale />
-                    <p>Authentication</p>
+                <span row center v-bind="props">
+                    <Icon icon="mdi-account" x2  cp scale mx-2 />
+                    <p>Authentication</p></span>
             </template>
             <v-card>
                 <Auth />

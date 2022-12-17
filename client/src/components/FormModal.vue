@@ -15,14 +15,11 @@ const search = async () => {
                     <Icon icon="mdi-magnify" x2 v-bind="props" cp scale />
             </template>
             <v-card>
-                <v-card-title>
-                    <span class="text-h5">Search Engine</span>
-                </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field label="Search terms" type="text" required
+                                <v-text-field label="Browse within your requests" type="text" required
                                     v-model="searchTerms"
                                     @keyup.enter="search"
                                 ></v-text-field>
@@ -32,17 +29,17 @@ const search = async () => {
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+                    <v-btn btn-del color="blue-darken-1" variant="text" @click="dialog = false">
                         Close
                     </v-btn>
                     <v-btn btn-get variant="text" @click="search">
                         Search
                     </v-btn>
                 </v-card-actions>
-            </v-card>
-            <p v-for="result in results">
+                <p v-for="result in results" text-xs px-12 py-6 col center>
                 {{ JSON.stringify(result) }}
             </p>
-        </v-dialog>
+            </v-card>
+           </v-dialog>
     </v-row>
 </template>

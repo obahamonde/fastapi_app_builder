@@ -2,7 +2,11 @@
   <RouterView />
 </template>
 <style global>
+@import url('https://fonts.googleapis.com/css2?family=Merienda:wght@500&display=swap');
 
+.merienda {
+  font-family: 'Merienda', cursive;
+}
 /* custom scrollbar */
 *::-webkit-scrollbar {
   width: 20px;

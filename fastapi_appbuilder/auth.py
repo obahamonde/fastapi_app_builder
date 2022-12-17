@@ -2,6 +2,13 @@ from prisma.models import User
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi import Depends, APIRouter, HTTPException, status, Request
 from hashlib import sha256
+from pydantic import  BaseModel
+
+class UserIn(BaseModel):
+    username: str
+    password: str
+    email: str
+
 
 class Auth(APIRouter):
     def __init__(self, *args, **kwargs):
@@ -15,14 +22,8 @@ class Auth(APIRouter):
                 'password': sha256(form_data.password.encode()).hexdigest(),
                 'email': form_data.client_id
             }
-            user = await User.prisma().upsert(
-                where={'email': payload['email']},
-                data={
-                    'create': payload,
-                    'update': payload
-                }
-            )
-            return {'access_token': sha256(user.password.encode()).hexdigest(), 'token_type': 'bearer'}
+            user = UserIn(**payload)
+            return {'access_token': user.password, 'token_type': 'bearer'}
 
         @self.get("/user_info")
         async def user_info(current_user: User = Depends(self.get_current_user)):

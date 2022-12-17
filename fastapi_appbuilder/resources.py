@@ -29,11 +29,13 @@ class Resource(APIRouter):
                 skip=skip
             )
             
-        @self.get('/{field}/{value}/count')
-        async def count(field: str, value: str, operator: str = 'equals'):
-            return await self.model.prisma().count(
-                where={field: {operator: value}}
+        @self.get('/{field}/{value}/{operator}')
+        async def search(field: str, value: str, operator: str = 'contains'):
+            return await self.model.prisma().find_many(
+                where={field: {operator: value}},
+                take=32,
             )
+
             
         @self.post('/')
         async def create(schema: self.schema):
